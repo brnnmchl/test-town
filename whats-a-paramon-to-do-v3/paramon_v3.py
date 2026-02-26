@@ -35,6 +35,7 @@ def new_round(table,effects,lbl_used,lbl_remain,used):
         if len(effects) == 1:
             #btn4.config(text="THIS IS A TEST")
             btn4.config(state=DISABLED,fg="gray40",bg="honeydew3")
+            create_reset()
             lbl4.configure(text="Click below to reset.",fg="black")
             active_effect = effects[0]
             new_lbl(lbl_used,"You use " + active_effect[1],0,2,2,N,"OCR A Extended",11,"palegoldenrod")
@@ -63,12 +64,12 @@ def new_round(table,effects,lbl_used,lbl_remain,used):
         lbl4.configure(text="Next Round: ")    
     return(table,effects,used)
 
-def get_started():
+def get_started(lbl):
     create_effects('paramon.csv',effect_table)
-    result1 = Label(set_up_overlay, text = str(len(effect_table)) + " effects set! ",
+    lbl.config(text = str(len(effect_table)) + " effects set! ",
                     font=("OCR A Extended",11),bg="palegoldenrod")
-    result1.grid(column=3,row=0,pady=5,padx=5,sticky=E)
-    btn1.config(state=DISABLED,fg="gray40",bg="honeydew3")
+    lbl.grid(column=3,row=0,pady=5,padx=5,sticky=E)
+    return(lbl)
 
 def get_effects(effect_set):
     effect_list = ""
@@ -79,25 +80,28 @@ def get_effects(effect_set):
             effect_list = effect_list + "\n" + str(stat[1])
     return(effect_list)
 
-def reset_effects():
-    btn1.config(state=NORMAL,bg="darkgreen",fg="white")
-    btn2.config(state=NORMAL,bg="darkgreen",fg="white")
-    btn4.config(state=NORMAL,bg="darkgreen",fg="white")
-
 def make_csv(used,ent_name):
     filename = ent_name.get() + ".csv"
     with open(filename,"w") as csvfile:
         writer = csv.writer(csvfile)
         writer.writerows(used)
-	
-effect_table = []
-effect_set = []
-used_effects = []
+
+def clear_table():
+    effect_table = []
+    effect_set = []
+
+def create_reset():
+    reset_btn = Button(fx_zone_overlay,text="Reset",font=("OCR A Extended",11),bg="darkgreen",fg="white",
+                   command=lambda:[btn1.config(state=NORMAL,bg="darkgreen",fg="white"),result1.config(text = ""),
+                                   btn2.config(state=NORMAL,bg="darkgreen",fg="white"),shuffled.config(text = ""),
+                                   btn4.config(state=NORMAL,bg="darkgreen",fg="white"),btn3.grid(),lbl3.grid(),
+                                   lbl5.configure(text="",fg="black"),lbl7.configure(text="",fg="black"),clear_table()])
+    reset_btn.grid(column=0,row=6,pady=5,padx=5,sticky=SW)
 	
 # set up window
 root = Tk()
 root.title("What's a Paramon to do?")
-root.geometry('525x575')
+root.geometry('625x625')
 root.config(bg="black")
 
 
@@ -116,21 +120,27 @@ set_up.grid(column=0,row=1,pady=5,padx=5,sticky=N)
 set_up_overlay = Frame(set_up,bg="palegoldenrod",bd=0,relief="flat")
 set_up_overlay.grid(column=0,row=0)
 
+effect_table = []
+effect_set = []
+used_effects = []
+
 lbl1 = Label(set_up_overlay, text = "Set the effects table?",font=("OCR A Extended",11),bg="palegoldenrod")
 lbl1.grid(column=0,row=0,pady=5,padx=5,sticky=W)
 buffer_lbl1 = Label(set_up_overlay,text="buffer",bg="palegoldenrod",fg="palegoldenrod")
 buffer_lbl1.grid(column=1,row=0)
-btn1 = Button(set_up_overlay, text = "Set",font=("OCR A Extended",11),bg="darkgreen",fg="white",command=get_started)
+result1 = Label(set_up_overlay, text = "")
+btn1 = Button(set_up_overlay, text = "Set",font=("OCR A Extended",11),bg="darkgreen",fg="white",
+              command=lambda:[get_started(result1),btn1.config(state=DISABLED,fg="gray40",bg="honeydew3")])
 btn1.grid(column=2,row=0,pady=5,padx=5)
 
 lbl2 = Label(set_up_overlay, text = "Shuffle the effects table?",font=("OCR A Extended",11),bg="palegoldenrod")
 lbl2.grid(column=0,row=1,pady=5,padx=5,sticky=W)
 buffer_lbl2 = Label(set_up_overlay,text="buffer",bg="palegoldenrod",fg="palegoldenrod")
 buffer_lbl2.grid(column=1,row=1)
-result2 = Label(set_up_overlay, text = "")
+shuffled = Label(set_up_overlay, text = "")
 btn2 = new_button(set_up_overlay,"btn2","Shuffle",
                   lambda:[random.shuffle(effect_table),
-                    new_lbl(result2,"Effects table shuffled",3,1,1,E,"OCR A Extended",11,"palegoldenrod"),
+                    new_lbl(shuffled,"Effects table shuffled",3,1,1,E,"OCR A Extended",11,"palegoldenrod"),
                     btn2.config(state=DISABLED,fg="gray40",bg="honeydew3")],2,1,NW)
 
 
@@ -149,7 +159,7 @@ btn3 = new_button(fx_zone_overlay,"btn3","Generate",
                   lambda: [starting_effects(effect_table,effect_set,used_effects),
                     new_lbl(lbl5,"Your starting effects are: ",0,4,2,N,"OCR A Extended",11,"palegoldenrod"),
                     new_lbl(lbl6,get_effects(effect_set),0,5,2,N,"OCR A Extended",11,"palegoldenrod"),
-                    btn3.destroy(),lbl3.destroy()],1,0,W)
+                    btn3.grid_remove(),lbl3.grid_remove()],1,0,W)
 
 lbl4 = Label(fx_zone_overlay, text = "Start first round?",font=("OCR A Extended",11),bg="palegoldenrod")
 lbl4.grid(column=0,row=1,pady=5,padx=5,sticky=NW)
@@ -159,17 +169,6 @@ btn4 = Button(fx_zone_overlay, text="Use and get new effect",font=("OCR A Extend
               command=lambda: [new_round(effect_table,effect_set,used,lbl7,used_effects),lbl5.configure(text="Your new effects are: "),
                                lbl6.configure(text = get_effects(effect_set))])
 btn4.grid(column=1,row=1,pady=5,padx=5,sticky=NW)
-
-
-# reset effects table
-#reset_btn = Button(fx_zone_overlay,text="Reset",font=("OCR A Extended",11),bg="darkgreen",fg="white",
-                   #command=lambda:[btn1.config(state=NORMAL,bg="darkgreen",fg="white"),
-                                   #btn2.config(state=NORMAL,bg="darkgreen",fg="white"),
-                                   #btn4.config(state=NORMAL,bg="darkgreen",fg="white"),
-                                   #os.system("test_paramon_v3.ipynb")])
-reset_btn = Button(fx_zone_overlay,text="Reset",font=("OCR A Extended",11),bg="darkgreen",fg="white",
-                   command=os.system("test_paramon_v3.py"))
-reset_btn.grid(column=0,row=6,pady=5,padx=5,sticky=SW)
 
 
 # frame out the end of session options
