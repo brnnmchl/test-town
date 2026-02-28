@@ -17,7 +17,7 @@ def starting_effects(table,effects,used):
     return(table,effects,used)
 
 def new_button(container,name,btntxt,cmd,col,rw,stick):
-    name = Button(container,text=btntxt,font=("Lucida Console",11),bg="darkgreen",fg="white",command=cmd)
+    name = Button(container,text=btntxt,font=("Lucida Console",11),bg="#006400",fg="#ffffff",command=cmd)
     name.grid(column=col,row=rw,pady=5,padx=5,sticky=stick)
     return(name)
 
@@ -28,23 +28,23 @@ def new_lbl(lblname,lbltxt,col,rw,colspan,stick,fnt_typ,fnt_sz,bkgd):
 
 def new_round(table,effects,lbl_used,lbl_remain,used):
     if len(table) == 0 :
-        lbl_remain.configure(text="No more new effects remain.",fg="firebrick")
-        lbl5.configure(fg="palegoldenrod")
+        lbl_remain.configure(text="No more new effects remain.",fg="#b22222")
+        lbl5.configure(fg="#eee8aa")
         lbl6.configure(text = get_effects(effect_set))
         if len(effects) == 1:
             #btn4.config(text="THIS IS A TEST")
-            btn4.config(state=DISABLED,fg="gray40",bg="honeydew3")
+            btn4.config(state=DISABLED,fg="#666666",bg="#c1cdc1")
             create_reset()
-            lbl4.configure(text="Click below to reset.",fg="black")
+            lbl4.configure(text="Click below to reset.",fg="#000000")
             active_effect = effects[0]
-            new_lbl(lbl_used,"You use " + active_effect[1],0,2,2,N,"Lucida Console",11,"palegoldenrod")
+            new_lbl(lbl_used,"You use " + active_effect[1],0,2,2,N,"Lucida Console",11,"#eee8aa")
             lbl_used.configure(fg="indigo")
             used.append(active_effect)
             effects.remove(active_effect)
         else:
             index1 = random.randrange(len(effects))
             active_effect = effects[index1]
-            new_lbl(lbl_used,"You use " + active_effect[1],0,2,2,N,"Lucida Console",11,"palegoldenrod")
+            new_lbl(lbl_used,"You use " + active_effect[1],0,2,2,N,"Lucida Console",11,"#eee8aa")
             lbl_used.configure(fg="indigo")
             used.append(active_effect)
             effects.remove(active_effect)
@@ -53,12 +53,12 @@ def new_round(table,effects,lbl_used,lbl_remain,used):
     else: 
         index1 = random.randrange(len(effects))
         active_effect = effects[index1]
-        new_lbl(lbl_used,"You use " + active_effect[1],0,2,2,N,"Lucida Console",11,"palegoldenrod")
+        new_lbl(lbl_used,"You use " + active_effect[1],0,2,2,N,"Lucida Console",11,"#eee8aa")
         effects[index1] = table[0]
         used.append(table[0])
         table.remove(table[0])
         new_lbl(lbl_remain,"There are " + str(len(table)) + " effects remaining.",
-                                        0,3,2,N,"Lucida Console",11,"palegoldenrod")
+                                        0,3,2,N,"Lucida Console",11,"#eee8aa")
         lbl_used.configure(fg="indigo")
         lbl4.configure(text="Next Round: ")    
     return(table,effects,used)
@@ -66,7 +66,7 @@ def new_round(table,effects,lbl_used,lbl_remain,used):
 def get_started(lbl):
     create_effects('paramon.csv',effect_table)
     lbl.config(text = str(len(effect_table)) + " effects set! ",
-                    font=("Lucida Console",11),bg="palegoldenrod")
+                    font=("Lucida Console",11),bg="#eee8aa")
     lbl.grid(column=3,row=0,pady=5,padx=5,sticky=E)
     return(lbl)
 
@@ -90,104 +90,104 @@ def clear_table():
     effect_set = []
 
 def create_reset():
-    reset_btn = Button(fx_zone_overlay,text="Reset",font=("Lucida Console",11),bg="darkgreen",fg="white",
-                   command=lambda:[btn1.config(state=NORMAL,bg="darkgreen",fg="white"),result1.config(text = ""),
-                                   btn2.config(state=NORMAL,bg="darkgreen",fg="white"),shuffled.config(text = ""),
-                                   btn4.config(state=NORMAL,bg="darkgreen",fg="white"),btn3.grid(),lbl3.grid(),
-                                   lbl5.configure(text="",fg="black"),lbl7.configure(text="",fg="black"),clear_table()])
+    reset_btn = Button(fx_zone_overlay,text="Reset",font=("Lucida Console",11),bg="#006400",fg="#ffffff",
+                   command=lambda:[btn1.config(state=NORMAL,bg="#006400",fg="#ffffff"),result1.config(text = ""),
+                                   btn2.config(state=NORMAL,bg="#006400",fg="#ffffff"),shuffled.config(text = ""),
+                                   btn4.config(state=NORMAL,bg="#006400",fg="#ffffff"),btn3.grid(),lbl3.grid(),
+                                   lbl5.configure(text="",fg="#000000"),lbl7.configure(text="",fg="#000000"),clear_table()])
     reset_btn.grid(column=0,row=6,pady=5,padx=5,sticky=SW)
 	
 # set up window
 root = Tk()
 root.title("What's a Paramon to do?")
 root.geometry('625x625')
-root.config(bg="black")
+root.config(bg="#000000")
 
 
 # set up title frame
-title = Frame(root,bg="darkorange2",bd=5,relief="ridge")
+title = Frame(root,bg="#ee7600",bd=5,relief="ridge")
 title.grid(column=0,row=0,pady=5,padx=5)
 
 greet = Label(title, text = "WHAT'S A PARAMON TO DO?!",
-              font=("Lucida Console",20),fg="navy",bg="palegoldenrod")
+              font=("Lucida Console",20),fg="#000080",bg="#eee8aa")
 greet.grid(column=0,row=0,sticky=N)
 
 
 # set up effects set up frame
-set_up = Frame(root,bg="darkorange2",bd=5,relief="ridge")
+set_up = Frame(root,bg="#ee7600",bd=5,relief="ridge")
 set_up.grid(column=0,row=1,pady=5,padx=5,sticky=N)
-set_up_overlay = Frame(set_up,bg="palegoldenrod",bd=0,relief="flat")
+set_up_overlay = Frame(set_up,bg="#eee8aa",bd=0,relief="flat")
 set_up_overlay.grid(column=0,row=0)
 
 effect_table = []
 effect_set = []
 used_effects = []
 
-lbl1 = Label(set_up_overlay, text = "Set the effects table?",font=("Lucida Console",11),bg="palegoldenrod")
+lbl1 = Label(set_up_overlay, text = "Set the effects table?",font=("Lucida Console",11),bg="#eee8aa")
 lbl1.grid(column=0,row=0,pady=5,padx=5,sticky=W)
-buffer_lbl1 = Label(set_up_overlay,text="buffer",bg="palegoldenrod",fg="palegoldenrod")
+buffer_lbl1 = Label(set_up_overlay,text="buffer",bg="#eee8aa",fg="#eee8aa")
 buffer_lbl1.grid(column=1,row=0)
 result1 = Label(set_up_overlay, text = "")
-btn1 = Button(set_up_overlay, text = "Set",font=("Lucida Console",11),bg="darkgreen",fg="white",
-              command=lambda:[get_started(result1),btn1.config(state=DISABLED,fg="gray40",bg="honeydew3")])
+btn1 = Button(set_up_overlay, text = "Set",font=("Lucida Console",11),bg="#006400",fg="#ffffff",
+              command=lambda:[get_started(result1),btn1.config(state=DISABLED,fg="#666666",bg="#c1cdc1")])
 btn1.grid(column=2,row=0,pady=5,padx=5)
 
-lbl2 = Label(set_up_overlay, text = "Shuffle the effects table?",font=("Lucida Console",11),bg="palegoldenrod")
+lbl2 = Label(set_up_overlay, text = "Shuffle the effects table?",font=("Lucida Console",11),bg="#eee8aa")
 lbl2.grid(column=0,row=1,pady=5,padx=5,sticky=W)
-buffer_lbl2 = Label(set_up_overlay,text="buffer",bg="palegoldenrod",fg="palegoldenrod")
+buffer_lbl2 = Label(set_up_overlay,text="buffer",bg="#eee8aa",fg="#eee8aa")
 buffer_lbl2.grid(column=1,row=1)
 shuffled = Label(set_up_overlay, text = "")
 btn2 = new_button(set_up_overlay,"btn2","Shuffle",
                   lambda:[random.shuffle(effect_table),
-                    new_lbl(shuffled,"Effects table shuffled",3,1,1,E,"Lucida Console",11,"palegoldenrod"),
-                    btn2.config(state=DISABLED,fg="gray40",bg="honeydew3")],2,1,NW)
+                    new_lbl(shuffled,"Effects table shuffled",3,1,1,E,"Lucida Console",11,"#eee8aa"),
+                    btn2.config(state=DISABLED,fg="#666666",bg="#c1cdc1")],2,1,NW)
 
 
 # set up the effects zone frame
-fx_zone = Frame(root,bg="darkorange2",bd=5,relief="ridge")
+fx_zone = Frame(root,bg="#ee7600",bd=5,relief="ridge")
 fx_zone.grid(column=0,row=2,pady=5,padx=5,sticky=N)
-fx_zone_overlay = Frame(fx_zone,bg="palegoldenrod",bd=0,relief="flat")
+fx_zone_overlay = Frame(fx_zone,bg="#eee8aa",bd=0,relief="flat")
 fx_zone_overlay.grid(column=0,row=0)
 
-lbl3 = Label(fx_zone_overlay, text = "Generate starting effects?",font=("Lucida Console",11),bg="palegoldenrod")
+lbl3 = Label(fx_zone_overlay, text = "Generate starting effects?",font=("Lucida Console",11),bg="#eee8aa")
 lbl3.grid(column=0,row=0,sticky=W)
-lbl5 = Label(fx_zone_overlay, text="",font=("Lucida Console",11),bg="palegoldenrod")
-lbl6 = Label(fx_zone_overlay, text="",font=("Lucida Console",11),bg="palegoldenrod")
-lbl7 = Label(fx_zone_overlay, text="",font=("Lucida Console",11),bg="palegoldenrod")
+lbl5 = Label(fx_zone_overlay, text="",font=("Lucida Console",11),bg="#eee8aa")
+lbl6 = Label(fx_zone_overlay, text="",font=("Lucida Console",11),bg="#eee8aa")
+lbl7 = Label(fx_zone_overlay, text="",font=("Lucida Console",11),bg="#eee8aa")
 btn3 = new_button(fx_zone_overlay,"btn3","Generate",
                   lambda: [starting_effects(effect_table,effect_set,used_effects),
-                    new_lbl(lbl5,"Your starting effects are: ",0,4,2,N,"Lucida Console",11,"palegoldenrod"),
-                    new_lbl(lbl6,get_effects(effect_set),0,5,2,N,"Lucida Console",11,"palegoldenrod"),
+                    new_lbl(lbl5,"Your starting effects are: ",0,4,2,N,"Lucida Console",11,"#eee8aa"),
+                    new_lbl(lbl6,get_effects(effect_set),0,5,2,N,"Lucida Console",11,"#eee8aa"),
                     btn3.grid_remove(),lbl3.grid_remove()],1,0,W)
 
-lbl4 = Label(fx_zone_overlay, text = "Start first round?",font=("Lucida Console",11),bg="palegoldenrod")
+lbl4 = Label(fx_zone_overlay, text = "Start first round?",font=("Lucida Console",11),bg="#eee8aa")
 lbl4.grid(column=0,row=1,pady=5,padx=5,sticky=NW)
 effects_remain = Label(fx_zone_overlay, text = "")
 used = Label(fx_zone_overlay, text = "")
-btn4 = Button(fx_zone_overlay, text="Use and get new effect",font=("Lucida Console",11),bg="darkgreen",fg="white",
+btn4 = Button(fx_zone_overlay, text="Use and get new effect",font=("Lucida Console",11),bg="#006400",fg="#ffffff",
               command=lambda: [new_round(effect_table,effect_set,used,lbl7,used_effects),lbl5.configure(text="Your new effects are: "),
                                lbl6.configure(text = get_effects(effect_set))])
 btn4.grid(column=1,row=1,pady=5,padx=5,sticky=NW)
 
 
 # frame out the end of session options
-end_sesh = Frame(root,bg="darkorange2",borderwidth=5,relief="ridge")
+end_sesh = Frame(root,bg="#ee7600",borderwidth=5,relief="ridge")
 end_sesh.grid(column=0,row=3,pady=5,padx=5,sticky=N)
-end_sesh_overlay = Frame(end_sesh,bg="palegoldenrod",bd=0,relief="flat")
+end_sesh_overlay = Frame(end_sesh,bg="#eee8aa",bd=0,relief="flat")
 end_sesh_overlay.grid(column=0,row=0)
 
-csv_lbl = Label(end_sesh_overlay, text="Enter filename: ",font=("Lucida Console",11),bg="palegoldenrod")
+csv_lbl = Label(end_sesh_overlay, text="Enter filename: ",font=("Lucida Console",11),bg="#eee8aa")
 csv_lbl.grid(column=0,row=0,pady=5,padx=5,sticky=NW)
 ent_filename = Entry(end_sesh_overlay)
 ent_filename.grid(column=1,row=0,pady=5,padx=5,sticky=NW)
 csv_created = Label(end_sesh_overlay,text="")
-used_csv_btn = Button(end_sesh_overlay, text="Export used effects",font=("Lucida Console",11),bg="darkgreen",fg="white",
+used_csv_btn = Button(end_sesh_overlay, text="Export used effects",font=("Lucida Console",11),bg="#006400",fg="#ffffff",
                       command=lambda: [make_csv(used_effects,ent_filename),
                                        new_lbl(csv_created,"CSV created in root folder!",
-                                               1,1,2,NW,"Lucida Console",11,"palegoldenrod")])
+                                               1,1,2,NW,"Lucida Console",11,"#eee8aa")])
 used_csv_btn.grid(column=2,row=0,pady=5,padx=5,sticky=NW)
 
-quit_btn = Button(end_sesh_overlay, text="All done",font=("Lucida Console",11),bg="firebrick",fg="white",command=root.destroy)
+quit_btn = Button(end_sesh_overlay, text="All done",font=("Lucida Console",11),bg="#b22222",fg="#ffffff",command=root.destroy)
 quit_btn.grid(column=0,row=1,pady=5,padx=5,sticky=SW)
 
 # let's get this show on the road
